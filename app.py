@@ -15,7 +15,7 @@ url = 'https://images-api.nasa.gov/search'
 
 ## Function to search result from form:
 def search_result(search):
-    data_term = ["q","center","keywords","location","year_start","year_end","media_type"]
+    data_term = ["q","center","keywords","location","year_start","year_end","media_type","description"]
     params = {}
     for term in data_term:
         if search.data[term] != '':

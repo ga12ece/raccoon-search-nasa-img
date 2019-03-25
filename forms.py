@@ -8,3 +8,4 @@ class ImageSearch(Form):
     year_start = TextField()
     year_end = TextField()
     media_type = TextField()
+    description = TextField()
