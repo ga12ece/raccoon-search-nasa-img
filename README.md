@@ -22,7 +22,7 @@ When users select an image, Raccoon makes the light turn off, allowing users to 
 
 Raccoon gives users about the image's description, time created as well as hyperlink keywords so that users can explore more about NASA Image Database
 
-<img src="https://github.com/ga12ece/raccoon-search-nasa-img/blob/master/static/image/metadata.png" width="700px">
+<img src="https://github.com/ga12ece/raccoon-search-nasa-img/blob/master/static/image/metadata.png" width="500px">
 
 - Give users the ability to refine search results by a date range, location, NASA center, Media type (image and audio).
 
