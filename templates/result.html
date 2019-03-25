@@ -25,7 +25,7 @@
         </div>
         <br><br>
         <!--Display the amount of search found-->
-        <div class="alert alert-success" role="alert">About {{ results|length }} have been found.</div>
+        <div class="alert alert-success" role="alert">About {{ results|length }}  results have been found.</div>
         <div class="overflow-auto">
             {% set n_row = results|length // 4 %}
             {% set last_row = results|length - n_row*4 %}
