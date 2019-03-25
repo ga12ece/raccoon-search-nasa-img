@@ -1,0 +1,227 @@
+{% extends "bootstrap/base.html" %}
+{% block titile %}NASA Search Image{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link href="/static/css/result.css" type="text/css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="container" id="content">
+        <!--NASA LOGO-->
+        <div class="page-header">
+            <p style="text-align:center">
+                <img src="/static/image/icon_yellow_background.png" alt="NASA logo" width="20%" height="20%">
+            </p>
+        </div>
+
+        <!--Display Query search-->
+        <div class="form-row">
+            <div class="input-group" style="text-align:center;">
+                <input id="q" type="text" class="form-control">
+                <span class="input-group-btn">
+                    <button id="searchBtn" class="btn btn-success" type="button">Search</button>
+                </span>
+            </div>
+        </div>
+        <br><br>
+        <!--Display the amount of search found-->
+        <div class="alert alert-success" role="alert">About {{ results|length }} have been found.</div>
+        <div class="overflow-auto">
+            {% set n_row = results|length // 4 %}
+            {% set last_row = results|length - n_row*4 %}
+            {% for row in range(n_row) %}
+                <!--one row to display image-->
+                <div class="container">
+                    <div class="row">
+                        {% for i in range(4) %}
+                            {% set index = row*4 + i %}
+                            {% set res = results[index] %}
+                            <div class="col-md-3" >
+                                {% if res.type == 'audio' %}
+                                    <audio controls class="center_img">
+                                        <source src="{{ res.media }}" type="audio/wav">
+                                    </audio>
+                                {% elif res.type == 'video' %}
+                                    <video poster="{{ res.thumbnail }}" controls class="center_img">
+                                        <source src="{{ res.media }}" type="video/mp4">
+                                    </video>
+                                {% else %}
+                                    {% set img_id = 'imgm' + index|string %}
+                                    {% set modal_id = 'm' + index|string %}
+                                    {% set cap_id = 'capm' + index|string %}
+                                    {% set md_img = 'mim' + index|string %}
+                                    <!-- Trigger the Modal -->
+                                    <img src="{{ res.thumbnail }}" alt="{{ res.title }}" class="center_img" id="{{ img_id }}">
+                                    <!-- The Modal -->
+                                    <div id="{{ modal_id }}" class="modal">
+                                        <!-- The Close Button -->
+                                        <span class="close">&times;</span>
+                                        <!-- Modal Content (The Image) -->
+                                        <img class="modal-content" id="{{ md_img }}">
+                                        <!-- Modal Caption (Image Text) -->
+                                        <div id="{{ cap_id }}" class="capmodal"></div>
+                                    </div>
+                                {% endif %}
+                                <h4>{{ res.title }}</h4>
+                                {% if res.type != 'audio' %}
+                                    {% if res.description %}
+                                        {% set lst_words = res.description.split(' ') %}
+                                        {% if lst_words|length < 10 %}
+                                            <p class="description">
+                                                <strong>Description: </strong>
+                                                {{ res.description }}
+                                            </p>
+                                        {% else %}
+                                            {% set dot_id = 'dots_' + index|string %}
+                                            {% set more_id = 'more_' + index|string %}
+                                            {% set button_id = index|string %}
+                                            <p class="description">
+                                                <strong>Description: </strong>
+                                                {{ lst_words[:10]|join(' ') }}
+                                                <span id="{{ dot_id }}"> ... </span>
+                                                <span class="more" id="{{ more_id }}" > {{ lst_words[10:]|join(' ') }}</span>
+                                            </p>
+                                            <button id="{{ button_id }}" class="button-txt btn btn-link">Read more</button>
+                                            <br><br>
+                                            
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                                {% if res.date_created %}
+                                <p><strong>Date created: </strong>{{ res.date_created }}</p>
+                                
+                                {% endif %}
+                                {% if res.center %}
+                                <p><strong>Center: </strong> 
+                                    <a href="/query?q={{ res.center }}">{{ res.center }}</a>
+                                </p>
+                            
+                                {% endif %}
+                                <p>
+                                    {% if res.keywords %}
+                                        <strong>Keywords: </strong>
+                                        {% for word in res.keywords %}
+                                            <span style="font-style:italic;">
+                                            {% if loop.index != res.keywords|length %}
+                                                <a href="/keywords?kw={{ word }}"> {{ word }} </a> ,
+                                            {% else %}
+                                                <a href="/keywords?kw={{ word }}"> {{ word }} </a>.
+                                            {% endif %}
+                                            </span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </p>
+                                <br><br>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            {% if last_row != 0 %}
+                <div class="container">
+                    <div class="row">
+                        {% for i in range(last_row) %}
+                            {% set index = n_row*4 + i %}
+                            {% set res = results[index] %}
+                            <div class="col-md-3" style="text-align:center;">
+                                {% if res.type == 'audio' %}
+                                    <audio controls class="center_img"><source src="{{ res.media }}" type="audio/wav"></audio>
+                                {% elif res.type == 'video' %}
+                                    <video poster="{{ res.thumbnail }}" controls class="center_img">
+                                        <source src="{{ res.media }}" type="video/mp4">
+                                    </video>
+                                {% else %}
+                                    {% set img_id = 'imgm' + index|string %}
+                                    {% set modal_id = 'm' + index|string %}
+                                    {% set cap_id = 'capm' + index|string %}
+                                    {% set md_img = 'mim' + index|string %}
+                                    <!-- Trigger the Modal -->
+                                    <img src="{{ res.thumbnail }}" alt="{{ res.title }}" class="center_img" id="{{ img_id }}">
+                                    <!-- The Modal -->
+                                    <div id="{{ modal_id }}" class="modal">
+                                        <!-- The Close Button -->
+                                        <span class="close">&times;</span>
+                                        <!-- Modal Content (The Image) -->
+                                        <img class="modal-content" id="{{ md_img }}">
+                                        <!-- Modal Caption (Image Text) -->
+                                        <div id="{{ cap_id }}" class="capmodal"></div>
+                                    </div>
+                                {% endif %}
+                                <h4 style="text-align:left;">{{ res.title }}</h4>
+                                {% if res.type != 'audio' %}
+                                    {% if res.description %}
+                                        {% set lst_words = res.description.split(' ') %}
+                                        {% if lst_words|length < 10 %}
+                                            <p class="description">
+                                                <strong>Description: </strong>
+                                                {{ res.description }}
+                                            </p>
+                                        {% else %}
+                                            {% set dot_id = 'dots_' + index|string %}
+                                            {% set more_id = 'more_' + index|string %}
+                                            {% set button_id = index|string %}
+                                            <p class="description">
+                                                <strong>Description: </strong>
+                                                {{ lst_words[:10]|join(' ') }}
+                                                <span id="{{ dot_id }}"> ... </span>
+                                                <span class="more" id="{{ more_id }}" > {{ lst_words[10:]|join(' ') }}</span>
+                                            </p>
+                                            <button id="{{ button_id }}" class="button-txt btn btn-link">Read more</button>
+                                            <br><br>
+                                            
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                                {% if res.date_created %}
+                                <p><strong>Date created: </strong>{{ res.date_created }}</p>
+                                
+                                {% endif %}
+                                {% if res.center %}
+                                <p><strong>Center: </strong> 
+                                    <a href="/query?q={{ res.center }}">{{ res.center }}</a>
+                                </p>
+                         
+                                {% endif %}
+                                <p>
+                                    {% if res.keywords %}
+                                        <strong>Keywords: </strong>
+                                        {% for word in res.keywords %}
+                                            <span style="font-style:italic;">
+                                            {% if loop.index != res.keywords|length %}
+                                                <a href="/keywords?kw={{ word }}"> {{ word }} </a> ,
+                                            {% else %}
+                                                <a href="/keywords?kw={{ word }}"> {{ word }} </a>.
+                                            {% endif %}
+                                            </span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </p>
+                                <br>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <br><br>
+    <div class="footer" id="footer" style="background-color: #f4d953">
+            <div class="container">
+                <br>
+                <p style="text-align: center;">Designed and built by <a href="https://github.com/ga12ece" target="_blank">@ga12ece</a></p>
+                <p style="text-align: center;">Powered by <a href="https://api.nasa.gov/api.html" target="_blank">NASA Image Database </a> , <a
+                        href="http://flask.pocoo.org/" target="_blank">Flask</a> and <a href="http://getbootstrap.com/"
+                        target="_blank">Bootstrap</a></p>
+            </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script type="text/javascript" src="/static/js/results.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    // $("#content").empty();
+  });
+</script>
+{% endblock %}

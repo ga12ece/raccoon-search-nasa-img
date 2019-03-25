@@ -1,0 +1,139 @@
+{% extends "bootstrap/base.html" %}
+{% block titile %}NASA Search Image{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link href="/static/css/index.css" type="text/css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="container" id='content'>
+        <!--NASA LOGO-->
+        <div class="page-header">
+            <p style="text-align:center">
+                <img src="/static/image/icon_yellow_background.png" alt="NASA logo" width="20%" height="20%">
+            </p>
+        </div>
+
+        <h2 style="text-align:center;">NASA SEARCH IMAGE DATABASE</h2>
+        <br><br>
+        <form action="" method="post" role="form">
+            {{ form.csrf }}
+            <!--Query Form-->
+            <div class="form-row">
+                <div class="input-group" style="text-align:center;">
+                    <input type="text" class="form-control" id="q" name="q" 
+                    placeholder="Enter anything you want to search about NASA Image Database">
+                    <span class="input-group-btn">
+                        <button id="searchBtn" class="btn btn-success" type="submit">Search</button>
+                    </span>
+                </div>
+            </div>
+            <br>
+            <button class="btn btn-primary" id="detailBtn" type="button">More details</button>
+            <br><br>
+            <div id="detailbox">
+                <!--Description-->
+                <div class="form-group col-md-12">
+                    <label for="description">Description:</label>
+                    <input type="text" class="form-control" id="description" name="description"
+                        placeholder="More detailed description (e.g moon landing)">
+                </div>
+                <br>
+                <!--Keywords-->
+                <div class="form-group col-md-12">
+                        <label for="keywords">Keywords:</label>
+                        <input type="text" class="form-control" id="keywords" name="keywords"
+                            placeholder="Keywords related to the medias (e.g Apollo 11)">
+                    </div>
+                <br>
+                <!--Center and Location-->
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="center">Center:</label>
+                        <select class="form-control" name="center" id="center">
+                            <option selected></option>
+                            <option value="HQ">NASA Headquarter</option>
+                            <option value="ARC">Ames Research Center</option>
+                            <option value="AFRC">Armstrong Flight Research Center</option>
+                            <option value="GRC">Glenn Research Center</option>
+                            <option value="GSFC">Goddard Flight Research Center</option>
+                            <option value="JPL">Jet Propulsion Laboratory</option>
+                            <option value="KSC">Kennedy Space Center</option>
+                            <option value="LRC">Langley Research Center</option>
+                            <option value="MSFC">Marshall Space Flight Center</option>
+                            <option value="SSC">Stennis Space Center</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label for="location">Location: </label>
+                        <input type="text" class="form-control" id="location" name="location" 
+                        placeholder="Enter the location where the photos were taken">
+                    </div>
+                </div>
+                <br>
+                <!--Media Type-->
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="media_type">Media:  </label>
+                        <br>
+                        <label class="radio-inline"><input type="radio" name="media_type" id="media_type" value="audio"> Audio</label>
+                        <label class="radio-inline"><input type="radio" name="media_type" id="media_type" value="image">Image</label>
+                    </div>
+                    <div class="col-md-4 form-group">
+                            <label for="year_start">Year Start: </label>
+                            <select id="year_start" name="year_start" class="form-control">
+                            </select>
+                        </div>
+                    <div class="col-md-4 form-group">
+                            <label for="year_end">Year End: </label>
+                            <select id="year_end" name="year_end" class="form-control">
+                            </select>
+                    </div>
+                </div>
+                <br>
+                <!--Year Created Year End-->
+            </div>
+        </form>
+
+        <br>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+
+        {% for message in messages %}
+        {% if "Error" not in message[1]: %}
+        <div class="alert alert-info">
+            <strong>Success! </strong> {{ message[1] }}
+        </div>
+        {% endif %}
+
+        {% if "Error" in message[1]: %}
+        <div class="alert alert-warning">
+            {{ message[1] }}
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+    </div>
+    <br><br>
+    <div class="footer" id="footer">
+            <div class="container">
+                <br>
+                <p style="text-align: center;">Designed and built by <a href="https://github.com/ga12ece" target="_blank">@ga12ece</a></p>
+                <p style="text-align: center;">Powered by <a href="https://api.nasa.gov/api.html" target="_blank">NASA Image Database </a> , <a
+                        href="http://flask.pocoo.org/" target="_blank">Flask</a> and <a href="http://getbootstrap.com/"
+                        target="_blank">Bootstrap</a></p>
+            </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script type="text/javascript" src="/static/js/index.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    // $("#content").empty();
+  });
+</script>
+{% endblock %}
