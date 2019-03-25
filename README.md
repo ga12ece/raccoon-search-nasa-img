@@ -32,7 +32,7 @@ Users can refine search criteria by clicking on More Details button from Front P
 
 From this image, users can refine search based on its description, NASA data center related to it, Location, Date range of the NASA project as well as media type
 
-<img src="https://github.com/ga12ece/raccoon-search-nasa-img/blob/master/static/image/error_noitem.png" width="700px>
+<img src="https://github.com/ga12ece/raccoon-search-nasa-img/blob/master/static/image/error_noitem.png" width="700px">
          
 Unless users don't enter anything to search, Raccoon feels sad :'(
 
